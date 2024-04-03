@@ -68,5 +68,16 @@ func (u *UserController) CreateAccount(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, user)
+}
 
+func (u *UserController) Delete(c *gin.Context) {
+	id := c.Param("id")
+
+	err := u.DB.Delete(&models.User{}, id).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, "Deleted")
 }
