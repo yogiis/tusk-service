@@ -27,6 +27,7 @@ func main() {
 	router.POST("/users/login", userController.Login)
 	router.POST("/users", userController.CreateAccount)
 	router.DELETE("/users/:id", userController.Delete)
+	router.GET("/users/employee", userController.Getemployee)
 
 	router.Static("/media", "./media")
 	router.Run("192.168.1.23:8080")

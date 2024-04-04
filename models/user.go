@@ -9,10 +9,10 @@ import (
 
 type User struct {
 	Id        int       `gorm:"type:int;primaryKey;autoIncrement" json:"id"`
-	Role      string    `gorm:"type:varchar(10)" json:"role"`
+	Role      string    `gorm:"type:varchar(10)" json:"role,omitempty"`
 	Name      string    `gorm:"type:varchar(255)" json:"name"`
-	Email     string    `gorm:"type:varchar(50)" json:"email"`
-	Password  string    `gorm:"type:varchar(255)" json:"password"`
+	Email     string    `gorm:"type:varchar(50)" json:"email,omitempty"`
+	Password  string    `gorm:"type:varchar(255)" json:"password,omitempty"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	Task      []Task    `gorm:"constraint:OnDelete:CASCADE" json:"tasks,omitempty"`
