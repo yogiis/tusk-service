@@ -32,7 +32,8 @@ func main() {
 
 	router.POST("/tasks", taskController.Create)
 	router.DELETE("/tasks/:id", taskController.Delete)
+	router.PATCH("/tasks/:id/submit", taskController.Submit)
 
 	router.Static("/media", "./media")
-	router.Run("192.168.1.20:8080")
+	router.Run("192.168.1.21:8080")
 }

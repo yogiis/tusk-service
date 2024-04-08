@@ -52,6 +52,53 @@ func (t *TaskController) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, "Deleted")
 }
 
+func (t *TaskController) Submit(c *gin.Context) {
+	task := models.Task{}
+	id := c.Param("id")
+	submitDate := c.PostForm("submitDate")
+	file, err := c.FormFile("attachment")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := t.DB.First(&task, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "not found"})
+		return
+	}
+
+	//remove old attachment
+	attachment := task.Attachment
+	fileInfo, _ := os.Stat("attachments/" + attachment)
+	if fileInfo != nil {
+		os.Remove("attachments/" + attachment)
+	}
+
+	//create new attachment
+	attachment = file.Filename
+	err = c.SaveUploadedFile(file, "attachments/"+attachment)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = t.DB.Where("id=?", id).Updates(models.Task{
+		Status:     "Review",
+		SubmitDate: submitDate,
+		Attachment: attachment,
+	}).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if task.Attachment != "" {
+		os.Remove("attachments/" + task.Attachment)
+	}
+
+	c.JSON(http.StatusOK, "Submite to Review")
+}
+
 func (u *TaskController) Getemployee(c *gin.Context) {
 	tasks := models.Task{}
 
