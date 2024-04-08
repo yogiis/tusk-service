@@ -17,6 +17,7 @@ func main() {
 
 	//Controller
 	userController := controller.UserController{DB: db}
+	taskController := controller.TaskController{DB: db}
 
 	//Router
 	router := gin.Default()
@@ -29,6 +30,8 @@ func main() {
 	router.DELETE("/users/:id", userController.Delete)
 	router.GET("/users/employee", userController.Getemployee)
 
+	router.POST("/tasks", taskController.CreateTask)
+
 	router.Static("/media", "./media")
-	router.Run("192.168.1.23:8080")
+	router.Run("192.168.1.20:8080")
 }
