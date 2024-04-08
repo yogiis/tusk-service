@@ -30,7 +30,8 @@ func main() {
 	router.DELETE("/users/:id", userController.Delete)
 	router.GET("/users/employee", userController.Getemployee)
 
-	router.POST("/tasks", taskController.CreateTask)
+	router.POST("/tasks", taskController.Create)
+	router.DELETE("/tasks/:id", taskController.Delete)
 
 	router.Static("/media", "./media")
 	router.Run("192.168.1.20:8080")
